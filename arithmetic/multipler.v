@@ -8,7 +8,7 @@ reg [31:0] prod;
 
 integer i;
 
-always@(multiplier or multiplicand) begin
+always@(*) begin
     prod = 0;
     for (i = 0; i < 16; i = i + 1)
         if (multiplier[i] == 1'b1) begin

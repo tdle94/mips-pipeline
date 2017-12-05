@@ -81,8 +81,8 @@ always@(opCode) begin
             ALUSel1 = 0;
             IFlush = 1'b0;
             ReadByte = 1;
-            MemRd = 0;
-            MemWrt = 1;
+            MemRd = 1'b1;
+            MemWrt = 1'bx;
             LoadByte = 1;
             RegSrc = 2'b0x;           // 4-1 mux to decide which value to read into the register
 
@@ -100,8 +100,8 @@ always@(opCode) begin
             ALUSel1 = 0;
             IFlush = 1'b0;
             ReadByte = 1;
-            MemRd = 1;
-            MemWrt = 0;
+            MemRd = 1'bx;
+            MemWrt = 1'b1;
             LoadByte = 1'bx;
             RegSrc = 2'bxx;           // 4-1 mux to decide which value to read into the register
 
@@ -119,8 +119,8 @@ always@(opCode) begin
             ALUSel1 = 0;
             IFlush = 1'b0;
             ReadByte = 0;
-            MemRd = 0;
-            MemWrt = 1;
+            MemRd = 1'b1;
+            MemWrt = 1'bx;
             LoadByte = 0;
             RegSrc = 2'b0x;           // 4-1 mux to decide which value to read into the register
 
@@ -138,8 +138,8 @@ always@(opCode) begin
             ALUSel1 = 0;
             IFlush = 1'b0;
             ReadByte = 0;
-            MemRd = 1;
-            MemWrt = 0;
+            MemRd = 1'bx;
+            MemWrt = 1'b1;
             LoadByte = 1'bx;
             RegSrc = 2'bxx;    // 4-1 mux to decide which value to read into the register
 

@@ -18,8 +18,10 @@ wire [15:0] addResult,          // add result
             quotient, remainder,    // divison result
             prodLower, prodUpper;       // mult result
 wire co;         	// carry out for addition
-integer i;
+
 reg [31:0] prod;
+
+
 always@(*) begin
     case (control)
 	4'b0110: begin   
@@ -29,28 +31,21 @@ always@(*) begin
 		op1 = a | b; // Or
 	end
 	4'b0000: begin  
-		op1 = a + b; // Add
+		op1 = addResult; // Add
 	end
 	4'b0001: begin    
-		op1 = a - b;  // Subtract
+		op1 = subResult;  // Subtract
 	end
 	4'b0011: begin            // Divide
-            op1 = a/b;
+            op1 = a / b;
             r15 = a - (b * op1);
 	end
 	4'b0010: begin            // Multiply
-	   /*prod = 32'h00000000;
-	   for (i = 0; i < 16; i = i + 1)
-		   if (op1[i] == 1'b1) begin
-			prod = prod + (b << i);
-			r15 = prod[31:17];
-			op1 = prod[16:1];
-		   end*/
-		  op1 = prodLower;
-		  r15 = prodUpper;
+	    op1 = prodLower;
+	    r15 = prodUpper;
 	end
 	4'b1000: begin
-		op1 = a + b; 	      // load, store, lbu and sb (addition)
+		op1 = addResult; 	      // load, store, lbu and sb (addition)
 	end
 	default: begin            // default
             r15 = 15'h0000;
@@ -59,5 +54,6 @@ always@(*) begin
 end
 
 multipler mult(prodLower, prodUpper, a, b);             // instantiate mult module
-
+nBitAdder sub(subResult, co, a, b, 1'b1);
+nBitAdder add(addResult, co, a, b, 1'b0);
 endmodule

@@ -1,11 +1,11 @@
 module swapMux1(
 	input [15:0] ALUMux1, OutDataOp1,
-	input Swap0,
+	input Swap1,
 	output reg [15:0] SwapSrc1
 );
 
 always@(*) begin
-	if (Swap0) begin
+	if (Swap1) begin
 		SwapSrc1 = OutDataOp1;
 	end
 	else begin

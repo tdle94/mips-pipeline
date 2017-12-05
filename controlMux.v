@@ -13,16 +13,13 @@ module controlMux(
 
 always@(*) begin
    	if (Stall) begin
-		//WBSig = zero;
-		//MEMSig = zero;
-        	//EXSig = 2'b00;
 		controlSig = {ALUOp, WBSig, MEMSig};
 	end
     	else begin
 		controlSig = {ALUOp, WBSig, MEMSig};
-	//	EXSig = ALUOp;
-        //	WBSig = 1;
-	//	MEMSig = 1;	
+	
+        
+	
 	end
 end
 

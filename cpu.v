@@ -1,4 +1,5 @@
 `include "pc.v"
+`include "memMux.v"
 `include "andUnit.v"
 `include "branchAdder.v"
 `include "instruction_mem.v"
@@ -27,12 +28,8 @@
 `include "ex_m.v"
 `include "forwardUnit.v"
  
-module cpu(input  clk, rst,
-	output [3:0] Operation,
-   	output [15:0]  ReadOp1Data, ReadOp2Data, OutDataOp1, OutDataOp2, ALUResult, RegR15Result
- );
+module cpu(input  clk, rst);
 
-	  
 /*********** Fetch wire connection ***************/
 wire [7:0] NextAddress;
 wire [7:0] PCresult, PCAdderResult, PCAdderOut;
@@ -44,8 +41,7 @@ wire [15:0] Instruction, InstrucOut;
 // Register file 
 wire [3:0] WrtRegR15, WrtRegOp1;
 wire [15:0] WrtDataOp1, WrtDataOp2, WrtDataR15;
-wire [15:0] ReadR15Data;
-//wire [15:0] ReadOp1Data, ReadOp2Data, ReadR15Data;
+wire [15:0] ReadOp1Data, ReadOp2Data, ReadR15Data;
 // control unit
 wire [1:0] ALUOp, RegSrc;
 wire BrOrJmp, Branch, RegWrt, IFlush, RegSwp, ALUSel0, ALUSel1, ReadByte, MemRd, MemWrt, LoadByte, WBSig, MEMSig;
@@ -61,13 +57,14 @@ wire [3:0] ControlSig;
 wire [7:0] BrcDecision;
 wire [7:0] BrcAddress;			// branch address
 // id ex buffer
-wire [15:0]  OutConcatZero, OutSignExtImmd;
-//wire [15:0] OutDataOp1, OutDataOp2, OutConcatZero, OutSignExtImmd;
+wire [15:0] OutDataOp1, OutDataOp2, OutConcatZero, OutSignExtImmd;
 wire [3:0] OutIdExOp1, OutIdExOp2;
 wire OutWB, OutMEM;
 wire [1:0] OutEX;
 
-/*********************************************/
+/*******************************************/
+
+
 
 
 /***********Execution wire connection *********/
@@ -79,8 +76,17 @@ wire [15:0] ALUSrc0, ALUSrc1, SwapSrc0, SwapSrc1, ALUMux0, ALUMux1,  ALUSrcOut0,
 // forward unit wire
 wire FwdA, FwdB, Swap0, Swap1;
 // alu control unit
-//wire [3:0] Operation;		// execution signal for the ALU to determine which operation to do
-//wire [15:0] ALUResult, RegR15Result;
+wire [3:0] Operation;		// execution signal for the ALU to determine which operation to do
+wire [15:0] ALUResult, RegR15Result;
+// ex mem buffer 
+wire [15:0] OutOp1ValExMem, OutOp2ValExMem, OutALUResultExMem, OutR15ResultExMem;
+wire [3:0] OutRegOp1ExMem, OutRegOp2ExMem;
+wire OutWBEX;
+/********************************************************/
+
+/************** Memory wire connection **********/
+wire [15:0] DataAddressIn;
+wire [15:0] ReadAddressData;
 /*********************************************/
 
 /**** Fetch stage **/
@@ -110,18 +116,24 @@ cmpUnit		       compareUnit(ReadOp1Data, ReadR15Data, CmpResult);
 andUnit		       andU(CmpResult, Branch, PCsrc); 
 controlMux	       controlM(ALUOp, WBSig, MEMSig, 1'b0, 1'b0, ControlSig);
 
-id_ex		       idexBuffer(clk, rst, ReadOp1Data, ReadOp2Data, {8'h00, InstrucOut[15:8]}, { {8{InstrucOut[7]}}, InstrucOut[7:0]},
-				  InstrucOut[11:8], InstrucOut[7:4], ControlSig[0], ControlSig[1], ControlSig[3:2], OutDataOp1, OutDataOp2,
+id_ex		       idexBuffer(clk, rst, ReadOp1Data, ReadOp2Data, {8'h00, InstrucOut[7:0]}, { {12{InstrucOut[3]}}, InstrucOut[3:0]}, 
+				  InstrucOut[11:8], InstrucOut[7:4], ControlSig[1], ControlSig[0], ControlSig[3:2], OutDataOp1, OutDataOp2,
 				  OutConcatZero, OutSignExtImmd, OutIdExOp1, OutIdExOp2, OutWB, OutMEM, OutEX);
 
 /**** Execution stage **/
-aluMux0		aluSrc0(OutDataOp1, OutSignExtImmd, 1'b0, ALUMux0);
-aluMux1	 	aluSrc1(OutDataOp2, OutConcatZero, 1'b0, ALUMux1);
+aluMux0		aluSrc0(OutDataOp1, OutSignExtImmd, ALUSel0, ALUMux0);
+aluMux1	 	aluSrc1(OutDataOp2, OutConcatZero, ALUSel1, ALUMux1);
 swapMux0	swpMux0(ALUMux0, OutDataOp2, 1'b0, SwapSrc0);
 swapMux1	swpMux1(ALUMux1, OutDataOp1, 1'b0, SwapSrc1);
-fwd0		fwdMux0(SwapSrc0, 16'hxxxx, 1'b0, ALUSrcOut0);
-fwd1		fwdMux1(SwapSrc1, 16'hxxxx, 1'b0, ALUSrcOut1);
+fwd0		fwdMux0(SwapSrc0, OutALUResultExMem, 1'b0, ALUSrcOut0);
+fwd1		fwdMux1(SwapSrc1, OutALUResultExMem, 1'b0, ALUSrcOut1);
 alu		aluUnit(ALUSrcOut0, ALUSrcOut1, Operation, ALUResult, RegR15Result);	// ALUResult will be store back to op1 register and R15Result will be store back to R15 register
 alu_control	aluCtrU(OutEX, OutSignExtImmd[3:0], Operation);
-//forwardUnit	fwdUnit(OutIdExOp1, OutIdExOp2, 4'hx, 4'hx, 1'b0, FwdA, FwdB, Swap0, Swap1); 
+ex_m		exmemBuffer(clk, rst, OutDataOp1, OutDataOp2, ALUResult, RegR15Result, OutIdExOp1, OutIdExOp2, OutWB, OutMEM, 
+	                    OutOp1ValExMem, OutOp2ValExMem, OutALUResultExMem, OutR15ResultExMem, OutRegOp1ExMem, OutRegOp2ExMem, OutWBEX); 
+forwardUnit	fwdUnit(OutIdExOp1, OutIdExOp2, OutRegOp1ExMem, OutRegOp2ExMem, OutWBEX, FwdA, FwdB, Swap0, Swap1); 
+
+/***** Memory stage ****/
+//memMux		memoryMux(OutALUResultExMem[7:0], OutALUResultExMem, StoreByte, DataAddressIn);
+data_memory	dataMemory(clk, rst, OutALUResultExMem, OutOp1ValExMem, ReadAddressData, MemRd, MemWrt); 
 endmodule

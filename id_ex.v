@@ -1,25 +1,30 @@
 module id_ex(
 	input clk, rst,
 	input [15:0] readDataOp1, readDataOp2,
-	input [15:0] concatZero, signExtImd,
+	input [15:0] concatZero, signExtImd, 
 	input [3:0] IdExOp1, IdExOp2,
 	input wb, mem,
 	input  [1:0] ex,
-	output reg [15:0] outDataOp1, outDataOp2, outConcatZero, outSignExtImd,
-	output reg [3:0] outIdExOp1, outIdExOp2,
-	output reg outWB, outMEM,
-	output reg [1:0] outEX
+	output  [15:0] outDataOp1, outDataOp2, outConcatZero, outSignExtImd, 
+	output  [3:0] outIdExOp1, outIdExOp2,
+	output  outWB, outMEM,
+	output  [1:0] outEX
 );
 
-/*(assign outEX = ex;
-assign outDataOp1 = readDataOp1;
-assign outDataOp2 = readDataOp2;
-assign outConcatZero = concatZero;
-assign outSignExtImd = signExtImd;
-assign outIdExOp1 = IdExOp1;
-assign outIdExOp2 = IdExOp2;
-assign outWB = wb;
-assign outMEM = mem;*/
+reg [15:0] inDataOp1, inDataOp2, inConcatZero, inSignExtImd;
+reg [3:0] inIdExOp1, inIdExOp2;
+reg inWB, inMEM;
+reg inEX;
+
+assign outEX = inEX;
+assign outDataOp1 = inDataOp1;
+assign outDataOp2 = inDataOp2;
+assign outConcatZero = inConcatZero;
+assign outSignExtImd = inSignExtImd;
+assign outIdExOp1 = inIdExOp1;
+assign outIdExOp2 = inIdExOp2;
+assign outWB = inWB;
+assign outMEM = inMEM;
 
 always@(posedge clk or negedge rst) begin
 
@@ -29,15 +34,15 @@ always@(posedge clk or negedge rst) begin
 		//outConcatZero <= 16'hxxxx;
 	end
 	else begin
-		outEX = ex;
-		outDataOp1 = readDataOp1;
-		outDataOp2 = readDataOp2;
-		outConcatZero = concatZero;
-		outSignExtImd = signExtImd;
-		outIdExOp1 = IdExOp1;
-		outIdExOp2 = IdExOp2;
-		outWB = wb;
-		outMEM = mem;
+		inEX = ex;
+		inDataOp1 = readDataOp1;
+		inDataOp2 = readDataOp2;
+		inConcatZero = concatZero;
+		inSignExtImd = signExtImd;
+		inIdExOp1 = IdExOp1;
+		inIdExOp2 = IdExOp2;
+		inWB = wb;
+		inMEM = mem;
 	end
 end
 endmodule
