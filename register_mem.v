@@ -37,7 +37,7 @@ always@(posedge clk or negedge rst) begin
     else begin
     	if (RegWrt && !RegSwp) begin
         	Registers[wrtRegOp1] <= wrtDataOp1;
-       		Registers[15] <= wrtDataR15;
+       		//Registers[15] <= wrtDataR15;
     	end
     	else if (RegWrt && RegSwp) begin      // swap register's value
         	Registers[readOp2] <= wrtDataOp1;

@@ -30,8 +30,8 @@ always@(*) begin
 	4'b0111: begin
 		op1 = a | b; // Or
 	end
-	4'b0000: begin  
-		op1 = addResult; // Add
+	4'b0000, 4'b1000: begin  
+		op1 = a + b; // Add, load and store
 	end
 	4'b0001: begin    
 		op1 = subResult;  // Subtract
@@ -43,10 +43,7 @@ always@(*) begin
 	4'b0010: begin            // Multiply
 	    op1 = prodLower;
 	    r15 = prodUpper;
-	end
-	4'b1000: begin
-		op1 = addResult; 	      // load, store, lbu and sb (addition)
-	end
+	end	
 	default: begin            // default
             r15 = 15'h0000;
 	end

@@ -7,6 +7,7 @@ module nBitAdder(f, cOut, a, b, cIn);
   input [n:0] b;
   input cIn;
 
-  always @(a, b, cIn)
-    {cOut, f} = a + b + cIn;
+  always @(*) begin
+    f = a + b + cIn;
+  end
 endmodule

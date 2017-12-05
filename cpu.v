@@ -98,8 +98,7 @@ if_id			ifidBuffer(clk, rst, Instruction, PCAdderResult, 1'b1, IFlush, InstrucOu
 
 
 /**** Decode stage **/
-muxBranch	       muxBrc({ {4{InstrucOut[11]}}, InstrucOut[11:8]}, { {4{InstrucOut[7]}}, InstrucOut[7:4]},
-	                         BrOrJmp, BrcDecision);
+muxBranch	       muxBrc(InstrucOut[7:0], InstrucOut[7:0], BrOrJmp, BrcDecision);
 branchAdder	       brcAdder(BrcDecision, PCAdderOut, BrcAddress);
 
 register_mem 		regFile(RegWrt, RegSwp, clk, rst, InstrucOut[11:8],  InstrucOut[7:4], 

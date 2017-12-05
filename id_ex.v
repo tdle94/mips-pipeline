@@ -16,15 +16,15 @@ reg [3:0] inIdExOp1, inIdExOp2;
 reg inWB, inMEM;
 reg inEX;
 
-assign outEX = inEX;
-assign outDataOp1 = inDataOp1;
-assign outDataOp2 = inDataOp2;
-assign outConcatZero = inConcatZero;
-assign outSignExtImd = inSignExtImd;
-assign outIdExOp1 = inIdExOp1;
-assign outIdExOp2 = inIdExOp2;
-assign outWB = inWB;
-assign outMEM = inMEM;
+assign outEX = ex;
+assign outDataOp1 = readDataOp1;
+assign outDataOp2 = readDataOp2;
+assign outConcatZero = concatZero;
+assign outSignExtImd = signExtImd;
+assign outIdExOp1 = IdExOp1;
+assign outIdExOp2 = IdExOp2;
+assign outWB = wb;
+assign outMEM = mem;
 
 always@(posedge clk or negedge rst) begin
 

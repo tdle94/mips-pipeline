@@ -14,12 +14,12 @@ reg [15:0] inOp1Val, inOp2Val, inALUResult, inR15Result;
 reg [3:0] inRegOp1, inRegOp2;
 reg inWB;
 
-assign outOp1Val = inOp1Val;
-assign outOp2Val = inOp2Val;
-assign outALUResult = inALUResult;
-assign outR15Result = inR15Result;
-assign outRegOp1 = inRegOp1;
-assign outRegOp2 = inRegOp2;
+assign outOp1Val = op1Val;
+assign outOp2Val = op2Val;
+assign outALUResult = ALUResult;
+assign outR15Result = R15Result;
+assign outRegOp1 = regOp1;
+assign outRegOp2 = regOp2;
 assign outWB = wb;
 
 always@(posedge clk or negedge rst) begin

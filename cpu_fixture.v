@@ -25,19 +25,14 @@ module cpu_fixture;
 	end
 	
 	initial begin
-		$display("\tTime  | PCresult | PCAdderResult | Instruction | Op1Data | Op2Data | R15Data | ALUResult | RegR15Result | Instruction_IF_ID | PCAdder_IF_ID");
+		$display("\tTime  | PCresult | PCAdderResult | Branch Address | PCSrc, Instruction | Op1Data | Op2Data | R15Data | ALUResult | RegR15Result | Instruction_IF_ID | PCAdder_IF_ID");
 		$display("--------------------------------------------------------------------------------------------------");
-		$monitor("%d, %b, %b, %h, %h, %h, %h, %h, %h, %h",$time, youShallNotPass.myPC.PCresult,		// PC result 
-			                     youShallNotPass.PCAdderResult, 												// PC adder result
-					     youShallNotPass.Instruction,												// Instruction
-				     	     youShallNotPass.ReadOp1Data, youShallNotPass.ReadOp2Data, youShallNotPass.ReadR15Data,					// Op1, Op2 and R15 Register ReadData
-				             youShallNotPass.SwapSrc0, youShallNotPass.OutALUResultExMem, youShallNotPass.ReadAddressData);// ALU result 
-					    // youShallNotPass.InstrucOut, youShallNotPass.PCAdderOut,		// if_ed buffer
-				           //  youShallNotPass.OutDataOp1, youShallNotPass.OutDataOp2, youShallNotPass.OutConcatZero, youShallNotPass.OutSignExtImmd, youShallNotPass.OutIdExOp1, // id_ex buffer
-				            // youShallNotPass.OutIdExOp2, youShallNotPass.OutWB, youShallNotPass.OutMEM, youShallNotPass.OutEX,  // id_ex buffer
-				          //   youShallNotPass.OutOp1ValExMem, youShallNotPass.OutOp2ValExMem, youShallNotPass.OutALUResultExMem, youShallNotPass.OutR15ResultExMem, // ex_mem buffer 
-					//     youShallNotPass.OutRegOp1ExMem, youShallNotPass.OutRegOp2ExMem, youShallNotPass.OutWBEX, // ex_mem buffer 
-				      //       youShallNotPass.OutALUResultExMem, youShallNotPass.MemRd, youShallNotPass.MemWrt ,youShallNotPass.ReadAddressData);	// read from memory for load instruction														
+		$monitor("%d, %b, %b, %b, %b, %b, %h, %h, %b",$time, youShallNotPass.myPC.PCresult,		// PC result 
+			                     youShallNotPass.PCAdderResult, youShallNotPass.BrcAddress, youShallNotPass.PCsrc, 		// PC adder result, branch and pcsrc
+					     youShallNotPass.Instruction, youShallNotPass.ReadOp1Data, youShallNotPass.ReadR15Data,
+				     	     youShallNotPass.CmpResult);										// Instruction
+				     	     //youShallNotPass.ReadOp1Data, youShallNotPass.ReadOp2Data, youShallNotPass.ReadR15Data,	// Op1, Op2 and R15 Register ReadData
+				             //youShallNotPass.OutEX, youShallNotPass.OutSignExtImmd, youShallNotPass.Operation, youShallNotPass.OutALUResultExMem, youShallNotPass.ReadAddressData);// ALU result 
 	end	
 
 	initial begin
