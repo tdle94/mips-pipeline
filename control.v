@@ -28,7 +28,7 @@ always@(opCode) begin
             MemRd = 1'bx;
             MemWrt = 1'bx;
             LoadByte = 1'bx;
-            RegSrc = 2'b00;          // 4-1 mux to decide which value to read into the register
+            RegSrc = 2'b10;          // 4-1 mux to decide which value to read into the register
 	    
             ALUOp = 2'bxx;	// is actually EX signal
 	    WBSig = 1'b1;		// write back signal
@@ -46,7 +46,7 @@ always@(opCode) begin
             MemRd = 1'bx;
             MemWrt = 1'bx;
             LoadByte = 1'bx;
-            RegSrc = 2'b01;           // 4-1 mux to decide which value to read into the register
+            RegSrc = 2'b10;           // 4-1 mux to decide which value to read into the register
 
             ALUOp = 2'b00;
 	    WBSig = 1'b1;               // write back signal
@@ -65,7 +65,7 @@ always@(opCode) begin
             MemRd = 1'bx;
             MemWrt = 1'bx;
             LoadByte = 1'bx;
-            RegSrc = 2'b01;           // 4-1 mux to decide which value to read into the register
+            RegSrc = 2'b10;           // 4-1 mux to decide which value to read into the register
 
             ALUOp = 2'b11;
 	     WBSig = 1'b1;               // write back signal
@@ -84,7 +84,7 @@ always@(opCode) begin
             MemRd = 1'b1;
             MemWrt = 1'bx;
             LoadByte = 1;
-            RegSrc = 2'b0x;           // 4-1 mux to decide which value to read into the register
+            RegSrc = 2'b00;           // 4-1 mux to decide which value to read into the register
 
             ALUOp = 2'b10;
 	    WBSig = 1'b1;               // write back signal
@@ -94,7 +94,7 @@ always@(opCode) begin
         4'b1011: begin      // store byte
             BrOrJmp = 1'bx;
             Branch = 0;
-            RegWrt = 1;
+            RegWrt = 0;
             RegSwp = 0;
             ALUSel0 = 1;
             ALUSel1 = 0;
@@ -122,7 +122,7 @@ always@(opCode) begin
             MemRd = 1'b1;
             MemWrt = 1'bx;
             LoadByte = 0;
-            RegSrc = 2'b0x;           // 4-1 mux to decide which value to read into the register
+            RegSrc = 2'b00;           // 4-1 mux to decide which value to read into the register
 
             ALUOp = 2'b10;
 		WBSig = 1'b1;               // write back signal
@@ -132,7 +132,7 @@ always@(opCode) begin
         4'b1101: begin      // store instruction
             BrOrJmp = 1'bx;
             Branch = 0;
-            RegWrt = 1;
+            RegWrt = 0;
             RegSwp = 0;
             ALUSel0 = 1;
             ALUSel1 = 0;

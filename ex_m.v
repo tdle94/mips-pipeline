@@ -24,13 +24,7 @@ assign outWB = wb;
 
 always@(posedge clk or negedge rst) begin
 	if (!rst) begin
-		/*outOp1Val = 0;
-		outOp2Val = 0;
-		outALUResult = 0;
-		outR15Result = 0;
-		outRegOp1 = 0;
-		outRegOp2 = 0;
-		outWB = 0;*/
+		
 	end
 	else begin
 		inOp1Val = op1Val;

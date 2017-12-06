@@ -1,4 +1,7 @@
 `include "pc.v"
+`include "readMemMux.v"
+`include "regSrcMux.v"
+`include "mem_wb.v"
 `include "memMux.v"
 `include "andUnit.v"
 `include "branchAdder.v"
@@ -87,7 +90,16 @@ wire OutWBEX;
 /************** Memory wire connection **********/
 wire [15:0] DataAddressIn;
 wire [15:0] ReadAddressData;
+wire [15:0] OutMemReadMemWb, OutOp1ValMemWb, OutALUResultMemWb, OutOp2ValMemWb, OutR15ResultMemWb;
+wire [3:0] OutRegOp1MemWb;
+wire OutRegWrtMemWb;
 /*********************************************/
+
+
+/*** Write back wire connection **/
+wire [15:0] ReadFromMemMux;
+
+/***************************/
 
 /**** Fetch stage **/
 pc		        myPC(NextAddress, PCresult, rst, clk, 1'b1);
@@ -102,12 +114,12 @@ muxBranch	       muxBrc(InstrucOut[7:0], InstrucOut[7:0], BrOrJmp, BrcDecision);
 branchAdder	       brcAdder(BrcDecision, PCAdderOut, BrcAddress);
 
 register_mem 		regFile(RegWrt, RegSwp, clk, rst, InstrucOut[11:8],  InstrucOut[7:4], 
-	               WrtRegR15, WrtRegOp1, 
-		       WrtDataOp1, WrtDataOp2, WrtDataR15, 
-		       ReadOp1Data, ReadOp2Data, ReadR15Data);
+	                         WrtRegOp1, 
+		                WrtDataOp1, WrtDataOp2, WrtDataR15, 
+		                ReadOp1Data, ReadOp2Data, ReadR15Data);
 
 control		       controlUnit(InstrucOut[15:12], ALUOp, RegSrc, BrOrJmp, Branch, RegWrt, 
-		 		   IFlush, RegSwp, ALUSel0, ALUSel1, StoreByte, MemRd, MemWrt, LoadByte, WBSig, MEMSig);
+		 		   IFlush, RegSwp, ALUSel0, ALUSel1, ReadByte, MemRd, MemWrt, LoadByte, WBSig, MEMSig);
 
 hazardDetection	       hazardControl(InstrucOut[11:8], InstrucOut[7:4], OutIdExOp1, MemRd, Stall, WrtIfId, PCWrt);
 
@@ -133,6 +145,13 @@ ex_m		exmemBuffer(clk, rst, OutDataOp1, OutDataOp2, ALUResult, RegR15Result, Out
 forwardUnit	fwdUnit(OutIdExOp1, OutIdExOp2, OutRegOp1ExMem, OutRegOp2ExMem, OutWBEX, FwdA, FwdB, Swap0, Swap1); 
 
 /***** Memory stage ****/
-//memMux		memoryMux(OutALUResultExMem[7:0], OutALUResultExMem, StoreByte, DataAddressIn);
-data_memory	dataMemory(clk, rst, OutALUResultExMem, OutOp1ValExMem, ReadAddressData, MemRd, MemWrt); 
+memMux		memoryMux(OutALUResultExMem[7:0], OutALUResultExMem, ReadByte, DataAddressIn);
+data_memory	dataMemory(clk, rst, OutALUResultExMem, OutOp1ValExMem, ReadAddressData, MemRd, MemWrt);
+mem_wb	        memwbBuffer(clk, rst, ReadAddressData, OutOp1ValExMem, 
+	                   OutALUResultExMem, OutOp2ValExMem, OutR15ResultExMem, OutRegOp1ExMem, OutWBEX, RegWrt, OutMemReadMemWb,
+			   WrtDataOp2, OutALUResultMemWb, OutOp2ValMemWb, WrtDataR15, WrtRegOp1, RegWrt);
+
+/*** Write back stage **/
+readMemMux	readMem(LoadByte, OutMemReadMemWb, ReadFromMemMux); 
+regSrcMux	regSrc(RegSrc, ReadFromMemMux, OutALUResultMemWb, OutOp2ValMemWb, WrtDataOp1);
 endmodule

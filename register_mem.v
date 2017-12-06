@@ -1,7 +1,7 @@
 module register_mem(
     input RegWrt, RegSwp, clk, rst,
     input [3:0] readOp1, readOp2,                // read the register value
-    input [3:0] wrtRegR15, wrtRegOp1,         // write the register value
+    input [3:0] wrtRegOp1,         // write the register value
     input [15:0] wrtDataOp1, wrtDataOp2, wrtDataR15,     // write a value into these register
     output [15:0] readOp1Data, readOp2Data, readR15Data  // read value of op1, op2 and register 15
 );

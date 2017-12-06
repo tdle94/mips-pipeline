@@ -52,9 +52,9 @@ SYNOPSYS_SYN=/titan/software/synopsys14/syn/linux/syn
 SYNOPSYS_SIM=/titan/software/synopsys14/vcs
 SYNOPSYS=/titan/software/synopsys14/syn/linux
 STATES_LICENSE_PATH=/usr/pkg/states/bin
-SSH_TTY=/dev/pts/58
-SSH_CONNECTION=10.117.204.134 49292 130.86.67.252 22
-SSH_CLIENT=10.117.204.134 49292 22
+SSH_TTY=/dev/pts/74
+SSH_CONNECTION=10.117.204.134 49320 130.86.67.252 22
+SSH_CLIENT=10.117.204.134 49320 22
 SSH_ASKPASS=/usr/libexec/openssh/gnome-ssh-askpass
 SNPSLMD_LICENSE_FILE=7241@titan.ecs.csus.edu:/titan/software/synopsys14/vcs/flexlm//license.dat
 SCRNAME=vcs
@@ -83,16 +83,16 @@ GEM_HOME=/usr/local/rvm/gems/ruby-2.0.0-p0
 CVS_RSH=ssh
 CDS_LIC_FILE=51700@flex2.ecs.csus.edu
 0
-36
-1512452236 forwardUnit.v
-1512501306 ex_m.v
-1512501027 alu_control.v
-1512454862 arithmetic/orOp.v
-1512456400 arithmetic/andOp.v
+39
+1512506365 forwardUnit.v
+1512522865 ex_m.v
+1512522193 alu_control.v
+1512520467 arithmetic/orOp.v
+1512520386 arithmetic/andOp.v
 1512455527 arithmetic/multipler.v
 1512498541 arithmetic/nBitAdder.v
 1512368241 arithmetic/divider.v
-1512500860 alu.v
+1512522295 alu.v
 1512331332 fwd1.v
 1512452304 fwd0.v
 1512457185 swapMux0.v
@@ -103,26 +103,29 @@ CDS_LIC_FILE=51700@flex2.ecs.csus.edu
 1512181809 branchAnd.v
 1512504649 cmpUnit.v
 1512500695 controlMux.v
-1512502027 data_memory.v
+1512507634 data_memory.v
 1512332672 hazardDetection.v
-1512500581 control.v
-1512502938 muxBranch.v
+1512521220 control.v
+1512505122 muxBranch.v
 1512271185 shift_left.v
 1512274710 signExt.v
-1512504856 register_mem.v
+1512519280 register_mem.v
 1512277908 pc_mux.v
-1512501243 if_id.v
+1512522536 if_id.v
 1512420094 pc_adder.v
-1512503684 instruction_mem.v
+1512506722 instruction_mem.v
 1512502696 branchAdder.v
 1512504503 andUnit.v
 1512428543 memMux.v
+1512519554 mem_wb.v
+1512520135 regSrcMux.v
+1512530657 readMemMux.v
 1512420066 pc.v
-1512504688 cpu.v
-1512504763 cpu_fixture.v
+1512531440 cpu.v
+1512531562 cpu_fixture.v
 4
 0 
 1400212016 /titan/software/synopsys14/vcs/linux/lib/libvirsim.so
 1400211768 /titan/software/synopsys14/vcs/linux/lib/librterrorinf.so
 1400211645 /titan/software/synopsys14/vcs/linux/lib/libsnpsmalloc.so
-1512504860 simv.daidir
+1512531578 simv.daidir

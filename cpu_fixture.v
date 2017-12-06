@@ -25,14 +25,21 @@ module cpu_fixture;
 	end
 	
 	initial begin
-		$display("\tTime  | PCresult | PCAdderResult | Branch Address | PCSrc, Instruction | Op1Data | Op2Data | R15Data | ALUResult | RegR15Result | Instruction_IF_ID | PCAdder_IF_ID");
+		$display("\tTime  | PCresult | Intruction | Op1 Val | Op2 Val | Concat Zero | Sign Ext Immd | ALUOp | RegSrc | BrOrJmp | Branch | RegWrt | IFlush | RegSwp | ALUSel0 | ALUSel1 | ReadByte | MemRd |MemWrt | LoadByte | WBSig | MEMSig | ALUResult | RegR15Result | ReadAddressData | Wrt Back to Reg Op1 | Wrt back to Reg 15 | Wrt back to Reg Op2");
 		$display("--------------------------------------------------------------------------------------------------");
-		$monitor("%d, %b, %b, %b, %b, %b, %h, %h, %b",$time, youShallNotPass.myPC.PCresult,		// PC result 
-			                     youShallNotPass.PCAdderResult, youShallNotPass.BrcAddress, youShallNotPass.PCsrc, 		// PC adder result, branch and pcsrc
-					     youShallNotPass.Instruction, youShallNotPass.ReadOp1Data, youShallNotPass.ReadR15Data,
-				     	     youShallNotPass.CmpResult);										// Instruction
-				     	     //youShallNotPass.ReadOp1Data, youShallNotPass.ReadOp2Data, youShallNotPass.ReadR15Data,	// Op1, Op2 and R15 Register ReadData
-				             //youShallNotPass.OutEX, youShallNotPass.OutSignExtImmd, youShallNotPass.Operation, youShallNotPass.OutALUResultExMem, youShallNotPass.ReadAddressData);// ALU result 
+		$monitor("%d, %h, %h, %h, %h, %h, %h, %b, %b, %b, %b, %b, %b, %b, %b, %b, %b, %b, %b, %b, %b, %b, %h, %h, %h, %h, %h, %h", $time,  
+			youShallNotPass.PCresult, youShallNotPass.InstrucOut,			
+			youShallNotPass.OutDataOp1, youShallNotPass.OutDataOp2, youShallNotPass.OutConcatZero, youShallNotPass.OutSignExtImmd,  // ID/EX buffer
+			youShallNotPass.ALUOp, youShallNotPass.RegSrc, youShallNotPass.BrOrJmp, youShallNotPass.Branch, youShallNotPass.RegWrt, // main control unit
+			youShallNotPass.IFlush, youShallNotPass.RegSwp, youShallNotPass.ALUSel0, youShallNotPass.ALUSel1, youShallNotPass.ReadByte, // main control unit
+			youShallNotPass.MemRd, youShallNotPass.MemWrt, youShallNotPass.LoadByte, youShallNotPass.WBSig, youShallNotPass.MEMSig,	// main control unit
+			youShallNotPass.ALUResult, youShallNotPass.RegR15Result, // ALU result
+			youShallNotPass.ReadAddressData,		// Read from memory
+			youShallNotPass.WrtDataOp1, youShallNotPass.WrtDataR15, youShallNotPass.WrtDataOp2		// Write from WB stage to the register. Put A type result to Op1 or R15. Swap between Op1 and Op2 
+		);
+			
+				     	    
+				           
 	end	
 
 	initial begin
